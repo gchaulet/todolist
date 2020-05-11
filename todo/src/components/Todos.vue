@@ -5,27 +5,31 @@
             <input type="text" class="new-todo" placeholder="Ajouter une tache" v-model="newTodo" @keyup.enter="addTodo">
         </header>
         <div class="main">
+            <input type="checkbox" class="togle-all" v-model="allDone">
             <ul class="todo-list">
-                <li class="todo " v-for="todo in filteredTodos" v-bind:key="todo" :class="{completed : todo.completed}">
+                <li class="todo  " v-for="todo in filteredTodos" v-bind:key="todo" :class="{completed : todo.completed, editing: todo === editing}">
                     <div class="view">
                         <input type="checkbox" v-model="todo.completed" class="toggle">
-                        <label for="">{{ todo.name }}</label>
+                        <label for="" @dblclick="editTodo(todo)">{{ todo.name }}</label>
+                        <button class="destroy" @click.prevent="deleteTodo(todo)"></button>
                     </div>
+                    <input type="text" class="edit" v-model="todo.name" @keyup="doneEdit" v-focus="todo === editing">
                 </li>
             </ul>
         </div>
-        <footer class="footer"><strong>{{ remaining }}</strong> tâches à faire
+        <footer class="footer" v-show="hasTodos"><strong>{{ remaining }}</strong> tâches à faire
         <ul class="filters">
             <li><a href="" :class="{selected: filter === 'all'}" @click.prevent="filter ='all'">Toutes</a></li>
             <li><a href="" :class="{selected: filter === 'todo'}" @click.prevent="filter ='todo'">A faire</a></li>
             <li><a href="" :class="{selected: filter === 'done'}" @click.prevent="filter ='done'">Faites</a></li>
         </ul>
+        <button class="clear-completed" v-show="completed" @click.prevent="deleteCompleted">Supprimer taches finies</button>
         </footer>
     </section>
 </template>
 
 <script>
-
+import Vue from 'vue'
 export default {
     data() {
         return {
@@ -34,7 +38,8 @@ export default {
                 completed: false
             }],
             newTodo: '',
-            filter: 'all'
+            filter: 'all',
+            editing: null
         }
     },
     methods: {
@@ -44,11 +49,41 @@ export default {
                 name: this.newTodo
             })
             this.newTodo = ''
+        },
+        deleteTodo(todo){
+            this.todos = this.todos.filter(i => i !== todo)
+        },
+        deleteCompleted(){
+            this.todos = this.todos.filter(todo => !todo.completed)
+        },
+        editTodo(todo){
+            this.editing = todo
+        },
+        doneEdit(){
+            this.editing = null
         }
+
     },
     computed: {
+        allDone: {
+            get() {
+                return this.remaining === 0
+            },
+            set(value) {
+                //console.log('value',value)
+                this.todos.forEach(todo => {
+                    todo.completed = value
+                });
+            }
+        },
         remaining() {
             return this.todos.filter(todo => !todo.completed).length
+        },
+        completed() {
+            return this.todos.filter(todo => todo.completed).length
+        },
+        hasTodos() {
+            return this.todos.length > 0
         },
         filteredTodos (){
             if(this.filter === 'todo'){
@@ -57,6 +92,15 @@ export default {
                 return this.todos.filter(todo => todo.completed)
             }
             return this.todos
+        }
+    },
+    directives :{
+        focus(el,value){
+            if(value){
+                Vue.nextTick(() => {
+                    el.focus()
+                })
+            }
         }
     }
   
