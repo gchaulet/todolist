@@ -22,7 +22,14 @@ export default {
 
         }
     },
-   
+    watch: {
+        //when delete one slide it returns automaically to the previous slide
+        slides(slides){
+            if(this.index >= this.slidesCount){
+                this.index = this.slidesCount - 1
+            }
+        }
+    },
     computed : {
         //count total number of slides available
         slidesCount () {

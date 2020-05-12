@@ -10,6 +10,7 @@
       </carousel-slide>
     </carousel>
     <button @click="addSlide">Add slide</button>
+     <button @click="removeSlide">Remove slide</button>
   </div>
 </template>
 
@@ -37,7 +38,10 @@ export default {
     },
     addSlide() {
       this.slides++
-    }
+    },
+    removeSlide() {
+      this.slides--
+    },
   },
   components: { 
     Todos,
