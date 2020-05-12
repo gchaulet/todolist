@@ -1,7 +1,6 @@
 <template>
     <transition :name="transition">
         <div  v-show="visible">
-            Index : {{ index }}
             <slot></slot>
         </div>
     </transition>
@@ -10,9 +9,9 @@
 
 <script>
 export default {
-    data () {
-        return {
-            index : 0
+    props: {
+        index: {
+            type : Number, default: 0
         }
     },
     computed : {

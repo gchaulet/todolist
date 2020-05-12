@@ -2,21 +2,14 @@
 <template>
   <div>
     <carousel>
-      <carousel-slide>
+      <carousel-slide v-for="n in slides" :key="n" :index="n - 1 ">
         <div style="position:absolute; left: 0; right: 0; text-align:center; top:50%; color: #FFF; font-size: 16px;">
-          Salut les gens
+          Slide {{ n }}
         </div>
-        <img src="https://i.picsum.photos/id/1011/600/600.jpg" alt="image1" width="100%">
-      </carousel-slide>
-      <carousel-slide>
-        <div style="position:absolute; left: 0; right: 0; text-align:center; top:50%; color: #FFF; font-size: 16px;">
-          Au revoir les gens
-        </div>  
-        <img src="https://i.picsum.photos/id/1011/600/600.jpg" alt="image1" width="100%">
+        <img :src="'https://i.picsum.photos/id/' + n + '/900/400.jpg'" alt="image1" width="100%">
       </carousel-slide>
     </carousel>
-    <todos v-model="todos"></todos>
-    
+    <button @click="addSlide">Add slide</button>
   </div>
 </template>
 
@@ -28,6 +21,7 @@ import CarouselSlide from './components/Carousel/CarouselSlide'
 export default {
   data() {
     return {
+      slides: 5,
       todos: [{
         name: 'Demo',
         completed: true
@@ -40,13 +34,16 @@ export default {
         name: 'Ejan',
         completed: false
       })
+    },
+    addSlide() {
+      this.slides++
     }
   },
   components: { 
     Todos,
     Carousel,
     CarouselSlide 
-    }
+  }
 }
 </script>
 
