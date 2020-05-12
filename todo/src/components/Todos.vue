@@ -13,7 +13,7 @@
                         <label for="" @dblclick="editTodo(todo)">{{ todo.name }}</label>
                         <button class="destroy" @click.prevent="deleteTodo(todo)"></button>
                     </div>
-                    <input type="text" class="edit" v-model="todo.name" @keyup="doneEdit" v-focus="todo === editing">
+                    <input type="text" class="edit" v-model="todo.name" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" @blur="doneEdit" v-focus="todo === editing">
                 </li>
             </ul>
         </div>
@@ -31,15 +31,21 @@
 <script>
 import Vue from 'vue'
 export default {
+    props: {
+        value: {type: Array, default(){ return[]}}
+    },
     data() {
         return {
-            todos: [{
-                name: 'Tache de test',
-                completed: false
-            }],
+            todos: this.value,
             newTodo: '',
             filter: 'all',
-            editing: null
+            editing: null,
+            oldTodo: ''
+        }
+    },
+    watch: {
+        value(value){
+            this.todos = value
         }
     },
     methods: {
@@ -52,15 +58,25 @@ export default {
         },
         deleteTodo(todo){
             this.todos = this.todos.filter(i => i !== todo)
+            this.$emit('input', this.todos)
         },
+        //deleted finished task
         deleteCompleted(){
             this.todos = this.todos.filter(todo => !todo.completed)
+            this.$emit('input', this.todos)
         },
+        //edit task
         editTodo(todo){
             this.editing = todo
+            this.oldTodo = todo.name
         },
         doneEdit(){
             this.editing = null
+            
+        },
+        cancelEdit() {
+            this.editing.name = this.oldTodo
+            this.doneEdit()
         }
 
     },
@@ -76,12 +92,14 @@ export default {
                 });
             }
         },
+        //remaining tasks
         remaining() {
             return this.todos.filter(todo => !todo.completed).length
         },
         completed() {
             return this.todos.filter(todo => todo.completed).length
         },
+        //detect if there are tasks to do
         hasTodos() {
             return this.todos.length > 0
         },
