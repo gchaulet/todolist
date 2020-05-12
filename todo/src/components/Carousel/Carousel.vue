@@ -1,9 +1,11 @@
 <template>
     <div clas="carousel">
         <slot></slot>
-        <button class="carousel__nav carousel__next" @click="next">Next</button>
-        <button class="carousel__nav carousel__previous" @click="prev">Previous</button>
+        <button class="carousel__nav carousel__previous" @click="prev"><i class="fas fa-arrow-left"></i> Previous</button>
+        <button class="carousel__nav carousel__next" @click="next">Next <i class="fas fa-arrow-right"></i></button>
     </div>
+ 
+
 </template>
 
 <script>
@@ -41,7 +43,7 @@ export default {
                 this.index = 0
             }
         },
-        prev (){
+        prev () {
             this.index--
             //go to last slide
             if(this.index < this.slidesCount){
@@ -52,3 +54,12 @@ export default {
 }
 </script>
 
+<style>
+    .carousel {
+        position: relative;
+    }
+
+    .carousel__nav {
+        position: relative;
+    }
+</style>
