@@ -16,7 +16,8 @@ export default {
             //know the current index
             index: 0,
             //cannot catch the object's childrens because previous console.log(this.$children) is empty 
-            slides: []
+            slides: [],
+            direction: 'null'
 
         }
     },
@@ -38,6 +39,7 @@ export default {
     methods : {
         next () {
             this.index++
+            this.direction ='right'
             // come back to slide 0 at the end
             if(this.index >= this.slidesCount){
                 this.index = 0
@@ -45,6 +47,7 @@ export default {
         },
         prev () {
             this.index--
+            this.direction='left'
             //go to last slide
             if(this.index < this.slidesCount){
                 this.index = this.slidesCount - 1

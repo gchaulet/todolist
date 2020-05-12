@@ -3,12 +3,16 @@
   <div>
     <carousel>
       <carousel-slide>
-        Salut les gens
-        <img src="https://i.picsum.photos/id/1011/600/600.jpg" alt="image1">
+        <div style="position:absolute; left: 0; right: 0; text-align:center; top:50%; color: #FFF; font-size: 16px;">
+          Salut les gens
+        </div>
+        <img src="https://i.picsum.photos/id/1011/600/600.jpg" alt="image1" width="100%">
       </carousel-slide>
-       <carousel-slide>
-        Au revoir les gens
-        <img src="https://i.picsum.photos/id/1012/600/600.jpg" alt="image1">
+      <carousel-slide>
+        <div style="position:absolute; left: 0; right: 0; text-align:center; top:50%; color: #FFF; font-size: 16px;">
+          Au revoir les gens
+        </div>  
+        <img src="https://i.picsum.photos/id/1011/600/600.jpg" alt="image1" width="100%">
       </carousel-slide>
     </carousel>
     <todos v-model="todos"></todos>
